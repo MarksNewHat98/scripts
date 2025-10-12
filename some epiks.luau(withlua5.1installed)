@@ -3,6 +3,55 @@ if getgenv and not getgenv().IYFELOADED then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/MarksNewHat98/scripts/refs/heads/main/stuf.lua5.1", true))()
 end
 
+local iy_env = getfenv(2)
+local eventEditor = iy_env.eventEditor
+
+local old_eventEditor_SaveData = eventEditor.SaveData
+eventEditor.SaveData = function()
+    local data = old_eventEditor_SaveData()
+    local decoded = game:GetService("HttpService"):JSONDecode(data)
+
+    if decoded.OnExecute then
+        local found_match1 = false
+        for _, cmd in pairs(decoded.OnExecute) do
+            if cmd[1] == "addplugin IYFE.iy" then
+                found_match1 = true
+            end
+        end
+
+        if not found_match1 then
+            table.insert(decoded.OnExecute, {"addplugin IYFE.iy", {}, 0})
+        end
+    end
+
+    --table.foreach(decoded.OnExecute, warn)
+
+    return game:GetService("HttpService"):JSONEncode(decoded)
+end
+
+local old_eventEditor_LoadData = eventEditor.LoadData
+eventEditor.LoadData = function(data)
+    local decoded = game:GetService("HttpService"):JSONDecode(data)
+
+    if decoded.OnExecute then
+        for i, cmd in pairs(decoded.OnExecute) do
+            if cmd[1] == "addplugin IYFE.iy" then
+                table.remove(decoded.OnExecute, i)
+            end
+        end
+    end
+
+    old_eventEditor_LoadData(game:GetService("HttpService"):JSONEncode(decoded))
+    
+    eventEditor.Refresh()
+end
+
+task.delay(2, function()
+    iy_env.updatesaves()
+    eventEditor.LoadData(eventEditor.SaveData())
+    --eventEditor.Refresh()
+end)
+
 return {
     ["PluginName"] = "IY_FE"
 }
