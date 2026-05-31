@@ -34,15 +34,7 @@
 -- please use the loadstring inside "LoadstringPatcher.lua" instead of copying this script
 
 local args = {...}
-
--- uses lua regex: https://gitspartv.github.io/lua-patterns/
-local patches = args[1] or {
-    -- example patches
-    [{ "example_code", '(print%(")(this string is unique)("%))'}] = "%1%2%2%3", -- repeats the string "this string is unique" in the print statement
-    [{ { "blacklist", "example_code" }, "(print%()'haha cant inject here'(%))", "%1[INJECTED_FUNCTION]%(%)%2" }] = function()
-        return "hello we have injected"
-    end, -- replaces the print's string with a function
-}
+local patches = args[1]
 
 local function mergeTables(target, ...)
     for _, from in pairs({...}) do
