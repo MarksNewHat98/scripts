@@ -116,7 +116,7 @@ genv.loadstring = function(code, name, ...)
             if type(value) == "function" then
                 local func_name = randomString()
                 genv[func_name] = value
-                replacement = 'getfenv%%%(%%%)%%%["' .. func_name .. '"%%%]'
+                replacement = 'getfenv()["' .. func_name .. '"]'
 
                 if data3 then
                     replacement = string.gsub(data3, "%[INJECTED_FUNCTION%]", replacement)
