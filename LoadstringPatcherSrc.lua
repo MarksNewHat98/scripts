@@ -91,8 +91,8 @@ if not table.find then
     end
 end
 
-local _loadstring = loadstring
-genv.loadstring = function(code, name, ...)
+local _loadstring = genv.loadstring or genv.load
+local function loadstring_wrap(code, name, ...)
     for data, value in pairs(patches) do
         local data1, data2, data3 = data[1], data[2], data[3]
         local check = data1 == nil or data1 == name
@@ -131,3 +131,8 @@ genv.loadstring = function(code, name, ...)
 
     return _loadstring(code, name, ...)
 end
+
+if genv.load then
+    genv.load = loadstring_wrap
+end
+genv.loadstring = loadstring_wrap
