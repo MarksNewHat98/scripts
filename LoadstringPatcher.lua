@@ -8,7 +8,7 @@ loadstring(game:HttpGet("https://github.com/MarksNewHat98/scripts/raw/refs/heads
 })
 -- insert your loadstring script to be patched down here
 
---[[
-local example_code = "print("this string is unique")\nprint("this string is here")\nloadstring("print('haha cant inject here')")()"
+local example_code = [[print("this string is unique")
+print("this string is here")
+loadstring("print('haha cant inject here')")()]]
 loadstring(example_code, "example_code")()
---]]
