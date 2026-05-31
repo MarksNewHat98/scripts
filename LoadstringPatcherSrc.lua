@@ -34,7 +34,8 @@
 -- please use the loadstring inside "LoadstringPatcher.lua" instead of copying this script
 
 local args = {...}
-local patches = args[1]
+local genv = args[1]
+local patches = args[2]
 
 local function mergeTables(target, ...)
     for _, from in pairs({...}) do
@@ -88,11 +89,6 @@ if not table.find then
             index = index + 1
         end
     end
-end
-
-local genv = getfenv(2)
-if pcall(getfenv, 3) then
-    genv = getfenv(3)
 end
 
 local _loadstring = loadstring
