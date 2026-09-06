@@ -93,7 +93,9 @@ end
 
 local _loadstring = genv.loadstring or genv.load
 local function loadstring_wrap(code, name, ...)
+    local ri = 0
     for data, value in pairs(patches) do
+        ri += 1
         local data1, data2, data3 = data[1], data[2], data[3]
         local check = data1 == nil or data1 == name
         if type(data1) == "table" then
@@ -126,6 +128,11 @@ local function loadstring_wrap(code, name, ...)
             end
 
             code = string.gsub(code, data2, replacement)
+
+            if args[3] then
+                print(ri, data2, replacement)
+                print("code after |" .. code .. "|")
+            end
         end
     end
 
