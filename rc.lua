@@ -1,3 +1,6 @@
+if getgenv().rcduhygt34iou75 then return end
+getgenv().rcduhygt34iou75 = true
+
 local ip = getgenv().rukjgedsg9403e890yghujrdfj45
 
 local __env = getfenv(0)
